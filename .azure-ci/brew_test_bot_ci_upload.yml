@@ -1,0 +1,57 @@
+# File: .azure-ci/brew_test_bot_ci_upload.yml
+
+parameters:
+  name: ''
+
+jobs:
+
+- job: brew_test_bot_ci_upload
+  displayName: Upload bottles
+
+  pool:
+    vmImage: macOS-10.14
+
+  steps:
+
+    - task: InstallSSHKey@0
+      inputs:
+        hostName: $(ssh_hostname)
+        sshPublicKey: $(ssh_public_key)
+        #sshPassphrase: $(ssh_passphrase) # Optional
+        sshKeySecureFile: $(ssh_secure_file)
+
+    - bash: |
+        set -e
+        sudo xcode-select --switch /Applications/Xcode_10.2.app/Contents/Developer
+        brew update-reset /usr/local/Homebrew
+        HOMEBREW_TAP_DIR="/usr/local/Homebrew/Library/Taps/$(github_user)/$(github_repo)"
+        mkdir -p "$HOMEBREW_TAP_DIR"
+        rm -rf "$HOMEBREW_TAP_DIR"
+        ln -s "$PWD" "$HOMEBREW_TAP_DIR"
+        brew install tree
+        brew tap --full $(test_bot_repo)
+        git -C /usr/local/Homebrew/Library/Taps/$(test_bot_repo) checkout --track origin/feature/push-only-tags-private
+      displayName: Setup environment
+
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        itemPattern: '**'
+        downloadPath: $(System.DefaultWorkingDirectory)
+      displayName: Download artifacts
+
+    - bash: |
+        tree
+        mv $(artifact_prefix)-*/* ./
+        rm -rf $(artifact_prefix)-*
+        cat *.json
+        tree
+      displayName: Move bottle files to $cwd
+
+    - bash: |
+        git branch
+        brew test-bot --ci-upload --bintray-org=$(bintray_org) --git-name=$(github_user) --git-email=$(github_email)
+      displayName: Run brew test-bot --ci-upload
+      env:
+        HOMEBREW_BINTRAY_USER: $(HOMEBREW_BINTRAY_USER)
+        HOMEBREW_BINTRAY_KEY: $(HOMEBREW_BINTRAY_KEY)
+        UPSTREAM_PULL_REQUEST: $(UPSTREAM_PULL_REQUEST)

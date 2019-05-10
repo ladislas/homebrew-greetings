@@ -1,0 +1,49 @@
+# File: .azure-ci/brew_test_bot.yml
+
+parameters:
+  name: ''
+  displayName: ''
+  vmImage: ''
+  xcode: ''
+
+jobs:
+
+- job: ${{ parameters.name }}
+  displayName: "${{ parameters.displayName }}"
+
+  pool:
+    vmImage: ${{ parameters.vmImage }}
+
+  dependsOn: []
+
+  variables:
+    xcode_version: ${{ parameters.xcode }}
+    artifact_name: ${{ parameters.vmImage }}
+
+  steps:
+
+    - bash: |
+        set -e
+        sudo xcode-select --switch /Applications/$(xcode_version).app/Contents/Developer
+        brew update-reset /usr/local/Homebrew
+        HOMEBREW_TAP_DIR="/usr/local/Homebrew/Library/Taps/$(github_user)/$(github_repo)"
+        mkdir -p "$HOMEBREW_TAP_DIR"
+        rm -rf "$HOMEBREW_TAP_DIR"
+        ln -s "$PWD" "$HOMEBREW_TAP_DIR"
+        brew tap --full $(test_bot_repo)
+        git -C /usr/local/Homebrew/Library/Taps/$(test_bot_repo) checkout --track origin/feature/push-only-tags-private
+      displayName: Setup environment
+
+    - bash: |
+        brew test-bot Formula/*.rb --root-url=$(bintray_root_url)
+      displayName: Run brew test-bot
+
+    - bash: |
+        cp *.bottle.* $(Build.ArtifactStagingDirectory)
+      displayName: Copy json & bottle files
+
+    - task: PublishPipelineArtifact@0
+      inputs:
+        artifactName: $(artifact_prefix)-$(artifact_name)
+        targetPath: $(Build.ArtifactStagingDirectory)
+      displayName: Publish $(artifact_prefix)-$(artifact_name)

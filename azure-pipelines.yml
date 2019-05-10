@@ -1,0 +1,98 @@
+# File: azure-pipelines.yml
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - README.md
+
+pr:
+  branches:
+    include:
+    - master
+    - develop
+  paths:
+    exclude:
+    - README.md
+
+variables:
+
+  - group: bintray
+  - group: ssh
+
+  - name: artifact_prefix
+    value: bottles
+
+  - name: test_bot_repo
+    value: ladislas/homebrew-test-bot
+
+  - name: github_user
+    value: ladislas
+  - name: github_email
+    value: ladislas@detoldi.me
+  - name: github_repo
+    value: homebrew-hello-world
+
+  - name: bintray_org
+    value: ladislas
+  - name: bintray_repo
+    value: hello-world
+  - name: bintray_root_url
+    value: https://dl.bintray.com/$(bintray_org)/bottles-$(bintray_repo)
+
+  - name: ssh_hostname
+    value: $(ssh.hostname)
+  - name: ssh_public_key
+    value: $(ssh.public_key)
+  # - name: ssh_passphraseds
+  #   value: $(ssh.passphrase)
+  - name: ssh_secure_file
+    value: $(ssh.secure_file)
+
+  - name: UPSTREAM_PULL_REQUEST
+    value: $(System.PullRequest.PullRequestNumber)
+  - name: HOMEBREW_BINTRAY_KEY
+    value: $(bintray.key)
+  - name: HOMEBREW_BINTRAY_USER
+    value: $(bintray.user)
+
+stages:
+
+  - stage: brew_test_bot
+    displayName: Create bottles
+
+    jobs:
+      - template: .azure-ci/brew_test_bot.yml
+        parameters:
+          name: brew_test_bot_macOS_10_14
+          displayName: for macOS Mojave (10.14)
+          vmImage: macOS-10.14
+          xcode: Xcode_10.2
+
+      - template: .azure-ci/brew_test_bot.yml
+        parameters:
+          name: brew_test_bot_macOS_10_13
+          displayName: for macOS High Sierra (10.13)
+          vmImage: macOS-10.13
+          xcode: Xcode_10.1
+
+      # - template: .azure-ci/brew_test_bot.yml
+      #   parameters:
+      #     name: brew_test_bot_ubuntu_16_04
+      #     displayName: for Ubuntu 16.04
+      #     vmImage: ubuntu-16.04
+
+  - stage: brew_test_bot_ci_upload
+    displayName: Upload bottles
+
+    dependsOn:
+      - brew_test_bot
+
+    condition: succeeded()
+
+    jobs:
+      - template: .azure-ci/brew_test_bot_ci_upload.yml
+        parameters:
+          name: Upload bottles
