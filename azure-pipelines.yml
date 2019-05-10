@@ -26,20 +26,22 @@ variables:
     value: bottles
 
   - name: test_bot_repo
-    value: ladislas/homebrew-test-bot
+    value: homebrew/homebrew-test-bot
 
+  # Github variables
   - name: github_user
     value: ladislas
   - name: github_email
     value: ladislas@detoldi.me
-  - name: github_repo
-    value: homebrew-hello-world
+  - name: github_tap_repo
+    value: homebrew-greetings
 
+  # Bintray variables
   - name: bintray_org
     value: ladislas
   - name: bintray_repo
-    value: hello-world
-  - name: bintray_root_url
+    value: greetings
+  - name: bintray_root_url # computed, do not change
     value: https://dl.bintray.com/$(bintray_org)/bottles-$(bintray_repo)
 
   - name: ssh_hostname
