@@ -26,7 +26,7 @@ variables:
     value: bottles
 
   - name: test_bot_repo
-    value: ladislas/homebrew-test-bot
+    value: homebrew/homebrew-test-bot
 
   - name: github_user
     value: ladislas
