@@ -11,7 +11,7 @@ class GoodbyeWorld < Formula
   end
 
   test do
-    assert_equal `hello`, "Hello, #{ENV["USER"]}!\nVersion #{version}\n"
+    assert_equal `goodbye`, "Goodbye, #{ENV["USER"]}!\nVersion #{version}\n"
   end
 end
 
