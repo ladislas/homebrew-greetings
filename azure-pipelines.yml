@@ -38,7 +38,7 @@ variables:
   - name: bintray_org
     value: ladislas
   - name: bintray_repo
-    value: hello-world
+    value: greetings
   - name: bintray_root_url
     value: https://dl.bintray.com/$(bintray_org)/bottles-$(bintray_repo)
 
