@@ -14,4 +14,3 @@ class GoodbyeWorld < Formula
     assert_equal `goodbye`, "Goodbye, #{ENV["USER"]}!\nVersion #{version}\n"
   end
 end
-
