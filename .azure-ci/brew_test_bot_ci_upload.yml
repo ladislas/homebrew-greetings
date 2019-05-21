@@ -20,13 +20,11 @@ jobs:
         #sshPassphrase: $(ssh_passphrase) # Optional
         sshKeySecureFile: $(ssh_secure_file)
 
-    - bash: |
-        set -e
-        sudo xcode-select --switch /Applications/Xcode_10.2.app/Contents/Developer
-        brew update
-        brew install tree
-        brew tap --full $(test_bot_repo)
-      displayName: Setup environment
+    - template: setup-ci-env.yml
+
+    # When working on a fork of homebrew/test-bot, run this step to tap your
+    # repository and checkout the correct feature branch
+    # - template: tap-dev-test-bot.yml
 
     - task: DownloadPipelineArtifact@1
       inputs:
@@ -35,18 +33,21 @@ jobs:
       displayName: Download artifacts
 
     - bash: |
+        echo UPSTREAM_GIT_URL:      $(UPSTREAM_GIT_URL)
+        echo UPSTREAM_PULL_REQUEST: $(UPSTREAM_PULL_REQUEST)
+        brew install tree
         tree
-        mv $(artifact_prefix)-*/* ./
-        rm -rf $(artifact_prefix)-*
+        mv *-bottle-*/* ./
+        rm -rf *-bottle-*
         cat *.json
         tree
-      displayName: Move bottle files to $cwd
+      displayName: Move bottle files to cwd
 
     - bash: |
-        git branch
-        brew test-bot --ci-upload --bintray-org=$(bintray_org) --git-name=$(github_user) --git-email=$(github_email)
+        brew test-bot --verbose --ci-upload --bintray-org=$(bintray_org) --git-name=$(github_user) --git-email=$(github_email)
       displayName: Run brew test-bot --ci-upload
       env:
         HOMEBREW_BINTRAY_USER: $(HOMEBREW_BINTRAY_USER)
         HOMEBREW_BINTRAY_KEY: $(HOMEBREW_BINTRAY_KEY)
+        UPSTREAM_GIT_URL: $(UPSTREAM_GIT_URL)
         UPSTREAM_PULL_REQUEST: $(UPSTREAM_PULL_REQUEST)
