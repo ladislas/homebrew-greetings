@@ -71,7 +71,33 @@ variables:
 stages:
 
   - stage: brew_test_bot
-    displayName: Create bottles
+    displayName: Test formulae schedule
+
+    condition: eq(variables['Build.Reason'], 'Schedule')
+
+    jobs:
+      - job: hw_from_schedule
+        steps:
+          - bash: |
+              echo "Hello World from schedule"
+            displayName: hw from schedule
+
+  - stage: brew_test_bot_PR
+    displayName: Test formulae PR
+
+    condition: eq(variables['Build.Reason'], 'PullRequest')
+
+    jobs:
+      - job: hw_from_PR
+        steps:
+          - bash: |
+              echo "Hello World from pull request"
+            displayName: hw from PR
+
+  - stage: brew_test_bot_build_bottles
+    displayName: Build bottles
+
+    condition: eq(variables['Build.Reason'], 'PullRequest')
 
     jobs:
       - template: .azure-ci/brew_test_bot.yml
@@ -98,7 +124,7 @@ stages:
     displayName: Upload bottles
 
     dependsOn:
-      - brew_test_bot
+      - brew_test_bot_build_bottles
 
     condition: succeeded()
 
