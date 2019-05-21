@@ -22,10 +22,14 @@ variables:
   - group: bintray
   - group: ssh
 
-  - name: artifact_prefix
-    value: bottles
+  - name: brew_tap_path
+    value: /usr/local/Homebrew/Library/Taps
 
   - name: test_bot_repo
+    value: ladislas/homebrew-test-bot
+  - name: test_bot_repo_branch
+    value: feature/fix-azure-tap-modified-formulae-detection
+  - name: test_bot_homebrew_repo
     value: homebrew/homebrew-test-bot
 
   # Github variables
@@ -53,12 +57,16 @@ variables:
   - name: ssh_secure_file
     value: $(ssh.secure_file)
 
-  - name: UPSTREAM_PULL_REQUEST
-    value: $(System.PullRequest.PullRequestNumber)
   - name: HOMEBREW_BINTRAY_KEY
     value: $(bintray.key)
   - name: HOMEBREW_BINTRAY_USER
     value: $(bintray.user)
+
+  - name: UPSTREAM_GIT_URL
+    value: $(Build.Repository.Uri)
+  - name: UPSTREAM_PULL_REQUEST
+    value: $(System.PullRequest.PullRequestNumber)
+
 
 stages:
 
