@@ -22,20 +22,33 @@ jobs:
 
   steps:
 
-    - bash: |
-        set -e
-        sudo xcode-select --switch /Applications/$(xcode_version).app/Contents/Developer
-        brew update
-        HOMEBREW_TAP_DIR="/usr/local/Homebrew/Library/Taps/$(github_user)/$(github_tap_repo)"
-        mkdir -p "$HOMEBREW_TAP_DIR"
-        rm -rf "$HOMEBREW_TAP_DIR"
-        ln -s "$PWD" "$HOMEBREW_TAP_DIR"
-        brew tap --full $(test_bot_repo)
-      displayName: Setup environment
+    # Setup CI environment
+    - template: setup-ci-env.yml
+      parameters:
+        xcode: $(xcode_version)
+
+    # Install your tap
+    - template: install-tap.yml
+
+    # When working on a fork of homebrew/test-bot, run this step to tap your
+    # repository and checkout the correct feature branch
+    # - template: tap-dev-test-bot.yml
 
     - bash: |
-        brew test-bot Formula/*.rb --root-url=$(bintray_root_url)
+        echo UPSTREAM_GIT_URL:      $(UPSTREAM_GIT_URL)
+        echo UPSTREAM_PULL_REQUEST: $(UPSTREAM_PULL_REQUEST)
+        brew test-bot --root-url=$(bintray_root_url)
       displayName: Run brew test-bot
+      env:
+        UPSTREAM_GIT_URL: $(UPSTREAM_GIT_URL)
+        UPSTREAM_PULL_REQUEST: $(UPSTREAM_PULL_REQUEST)
+
+    - script: |
+        RANDOM_FORMULA_ID="$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 16 | head -n 1)"
+        echo "Random Formula ID is: $RANDOM_FORMULA_ID"
+        echo "##vso[task.setvariable variable=formula_id;isOutput=true]$RANDOM_FORMULA_ID"
+      displayName: Set formula variable
+      name: set_formula_name
 
     - bash: |
         cp *.bottle.* $(Build.ArtifactStagingDirectory)
@@ -43,6 +56,6 @@ jobs:
 
     - task: PublishPipelineArtifact@0
       inputs:
-        artifactName: $(artifact_prefix)-$(artifact_name)
+        artifactName: $(set_formula_name.formula_id)-bottle-$(artifact_name)
         targetPath: $(Build.ArtifactStagingDirectory)
-      displayName: Publish $(artifact_prefix)-$(artifact_name)
+      displayName: Publish formula-bottle-$(artifact_name)
