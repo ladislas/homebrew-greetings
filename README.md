@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/ladisonline/homebrew-hello-world/_apis/build/status/ladislas.homebrew-hello-world?branchName=master)](https://dev.azure.com/ladisonline/homebrew-hello-world/_build/latest?definitionId=3&branchName=master)
+[![Build Status](https://dev.azure.com/ladisonline/homebrew-greetings/_apis/build/status/ladislas.homebrew-greetings?branchName=master)](https://dev.azure.com/ladisonline/homebrew-greetings/_build/latest?definitionId=5&branchName=master)
 
 # Greetings, World!
 
