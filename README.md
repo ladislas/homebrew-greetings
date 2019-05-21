@@ -48,7 +48,7 @@ You also need to add your SSH private key as a Secure File and give it the same 
 Your bottles will be uploaded on Bintray, so you need to:
 
 - create an account (free for open source) and if needed a new organization (this is optional)
-- create a new repository with the name `bottles-{your chosen name}` such as `bottles-greetings`
+- create a new repository with the name `bottles-{your chosen name}` such as [`bottles-greetings`](https://bintray.com/ladislas/bottles-greetings)
 - create a new package inside the repository with the name of the formula, such as `hello-world` or `goodbye-world`
 - in `azure-pipelines.yml`, update `bintray_org` and `bintray_repo` variables
 
