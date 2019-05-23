@@ -14,8 +14,8 @@ steps:
       sudo xcode-select --switch /Applications/$XCODE_VERSION.app/Contents/Developer
       brew unlink parallel
       brew install moreutils tree
-      git -C /usr/local/Homebrew fetch origin --tags | ts -i
-      git -C /usr/local/Homebrew reset --hard origin/master | ts -i
+      (git -C /usr/local/Homebrew fetch origin --tags) | ts -i
+      (git -C /usr/local/Homebrew reset --hard origin/master) | ts -i
       brew update | ts -i
     displayName: Setup CI Environment
     env:
