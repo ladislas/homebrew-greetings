@@ -1,5 +1,5 @@
 class GoodbyeWorld < Formula
-  desc "Simple C++ Goodbye World CLI to play with Homebrew"
+  desc "Simple C++ Goodbye World CLI to play with Homebreww"
   homepage "https://github.com/ladislas/goodbye-world"
 
   url "https://github.com/ladislas/goodbye-world/archive/2.0.0.tar.gz"
