@@ -23,16 +23,16 @@ jobs:
   steps:
 
     # Setup CI environment
-    - template: setup-ci-env.yml
+    - template: steps/setup-ci-env.yml
       parameters:
         xcode: $(xcode_version)
 
     # Install your tap
-    - template: install-tap.yml
+    - template: steps/install-tap.yml
 
     # When working on a fork of homebrew/test-bot, run this step to tap your
     # repository and checkout the correct feature branch
-    - template: tap-dev-test-bot.yml
+    - template: steps/tap-dev-test-bot.yml
 
     - bash: |
         echo UPSTREAM_GIT_URL:      $(UPSTREAM_GIT_URL)
