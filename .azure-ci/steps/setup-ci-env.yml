@@ -12,7 +12,8 @@ steps:
   - bash: |
       set -ex
       sudo xcode-select --switch /Applications/$XCODE_VERSION.app/Contents/Developer
-      brew update
+      brew install moreutils tree
+      brew update | ts -i
     displayName: Setup CI Environment
     env:
       XCODE_VERSION: ${{ parameters.xcode }}
