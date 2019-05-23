@@ -6,13 +6,20 @@ parameters:
 steps:
 
   - bash: |
+      printenv
+    displayName: Azure printenv
+
+  - bash: |
       set -ex
-      if [[ -n "$SYSTEM_PULLREQUEST_PULLREQUESTNUMBER" ]]; then
-        git fetch origin "master:master" "pull/$SYSTEM_PULLREQUEST_PULLREQUESTNUMBER/head:pr"
-        git checkout pr
-      fi
       sudo xcode-select --switch /Applications/$XCODE_VERSION.app/Contents/Developer
       brew update
     displayName: Setup CI Environment
     env:
       XCODE_VERSION: ${{ parameters.xcode }}
+
+  - bash: |
+      if [[ -n "$SYSTEM_PULLREQUEST_PULLREQUESTNUMBER" ]]; then
+        git fetch origin "master:master" "pull/$SYSTEM_PULLREQUEST_PULLREQUESTNUMBER/head:pr"
+        git checkout pr
+      fi
+    displayName: Checkout PR $(System.PullRequest.PullRequestNumber) branch
