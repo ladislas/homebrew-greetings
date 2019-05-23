@@ -37,7 +37,7 @@ jobs:
     - bash: |
         echo UPSTREAM_GIT_URL:      $(UPSTREAM_GIT_URL)
         echo UPSTREAM_PULL_REQUEST: $(UPSTREAM_PULL_REQUEST)
-        brew test-bot --root-url=$(bintray_root_url)
+        brew test-bot --root-url=$(bintray_root_url) | ts -i
       displayName: Run brew test-bot
       env:
         UPSTREAM_GIT_URL: $(UPSTREAM_GIT_URL)
