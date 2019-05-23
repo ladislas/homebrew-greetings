@@ -35,7 +35,6 @@ jobs:
     - bash: |
         echo UPSTREAM_GIT_URL:      $(UPSTREAM_GIT_URL)
         echo UPSTREAM_PULL_REQUEST: $(UPSTREAM_PULL_REQUEST)
-        brew install tree
         tree
         mv *-bottle-*/* ./
         rm -rf *-bottle-*
@@ -44,7 +43,7 @@ jobs:
       displayName: Move bottle files to cwd
 
     - bash: |
-        brew test-bot --verbose --ci-upload --bintray-org=$(bintray_org) --git-name=$(github_user) --git-email=$(github_email)
+        brew test-bot --verbose --ci-upload --bintray-org=$(bintray_org) --git-name=$(github_user) --git-email=$(github_email) | ts -i
       displayName: Run brew test-bot --ci-upload
       env:
         HOMEBREW_BINTRAY_USER: $(HOMEBREW_BINTRAY_USER)
