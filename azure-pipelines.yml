@@ -7,6 +7,8 @@ trigger:
   paths:
     exclude:
     - README.md
+    - .azure-ci/*
+    - azure-pipelines.yml
 
 pr:
   branches:
@@ -16,6 +18,8 @@ pr:
   paths:
     exclude:
     - README.md
+    - .azure-ci/*
+    - azure-pipelines.yml
 
 variables:
 
