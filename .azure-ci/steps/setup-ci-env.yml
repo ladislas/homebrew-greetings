@@ -12,6 +12,8 @@ steps:
   - bash: |
       set -ex
       sudo xcode-select --switch /Applications/$XCODE_VERSION.app/Contents/Developer
+      echo "fork variable: $(fork.secret)"
+      echo "fork variable: $FORK_SECRET"
       brew unlink parallel
       brew install moreutils tree
       (git -C /usr/local/Homebrew fetch origin --tags) | ts -i
@@ -20,6 +22,7 @@ steps:
     displayName: Setup CI Environment
     env:
       XCODE_VERSION: ${{ parameters.xcode }}
+      FORK_SECRET: $(fork.secret)
 
   - bash: |
       if [[ -n "$SYSTEM_PULLREQUEST_PULLREQUESTNUMBER" ]]; then
