@@ -25,6 +25,7 @@ variables:
 
   - group: bintray
   - group: ssh
+  - group: fork
 
   - name: brew_tap_path
     value: /usr/local/Homebrew/Library/Taps
