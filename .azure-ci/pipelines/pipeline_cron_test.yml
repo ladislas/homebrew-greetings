@@ -1,0 +1,15 @@
+# File: .azure-ci/pipelines/pipeline_cron_test.yml
+
+trigger:
+  - master
+
+name: pipeline_cron_test
+
+condition: eq(variables['Build.Reason'], 'Schedule')
+
+jobs:
+
+  - template: .azure-ci/jobs/test_template.yml
+    parameters:
+      name: test_stage_cron_job_on_master
+      message: Cron job on master
