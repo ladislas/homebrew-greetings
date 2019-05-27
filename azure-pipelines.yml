@@ -133,7 +133,7 @@ stages:
     displayName: Upload bottles
 
     dependsOn:
-      - brew_test_bot_build_bottles
+      - stage_build_bottle
 
     condition: succeeded()
 
@@ -149,7 +149,7 @@ stages:
   #########
   # Stage 5 - Auto publish revision bumps
   #########
-  - stage: stage_publish_revision_bumps
+  - stage: stage_publish_revision_bump
     displayName: Publish revision bump
 
     dependsOn:
@@ -160,6 +160,6 @@ stages:
     jobs:
       - template: .azure-ci/jobs/test_template.yml
         parameters:
-          name: test_stage_publish_revision_bumps
+          name: test_stage_publish_revision_bump
           displayName: Publish revision bump
           message: Publish revision bump
