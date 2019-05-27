@@ -13,4 +13,7 @@ jobs:
     steps:
       - bash: |
           echo ${{ parameters.message }}
+          git log
+          git show
+          echo $RANDOM
         displayName: Step - ${{ parameters.message }}

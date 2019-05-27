@@ -135,7 +135,7 @@ stages:
     dependsOn:
       - stage_build_bottle
 
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+    condition: and(succeeded('stage_build_bottle'), eq(variables['Build.Reason'], 'PullRequest'))
 
     jobs:
       - template: .azure-ci/jobs/test_template.yml
@@ -155,7 +155,7 @@ stages:
     dependsOn:
       - stage_upload_bottles
 
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+    condition: and(succeeded('stage_upload_bottles'), eq(variables['Build.Reason'], 'PullRequest'))
 
     jobs:
       - template: .azure-ci/jobs/test_template.yml
