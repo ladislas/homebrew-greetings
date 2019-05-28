@@ -13,7 +13,7 @@ jobs:
     steps:
       - bash: |
           echo ${{ parameters.message }}
-          git log
           git show
           echo $RANDOM
+          printenv
         displayName: Step - ${{ parameters.message }}
