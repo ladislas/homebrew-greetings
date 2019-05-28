@@ -71,115 +71,17 @@ variables:
 
 stages:
 
-  #########
-  # Stage 1 - Testing formulae on `master`
-  #########
-  - stage: stage_testing_formulae_on_master
-    displayName: Testing Formulae on master
+  # Stage 1 - Testing formulae on master
+  - template: /.azure-ci/stages/stage_test_formulae.yml
 
-    condition: eq(variables['Build.Reason'], 'IndividualCI')
-
-    jobs:
-      - template: .azure-ci/jobs/test_template.yml
-        parameters:
-          name: test_stage_testing_formulae_on_master
-          message: Testing Formulae on master
-
-  #########
   # Stage 2 - Cron job to test formulae
-  #########
-  - stage: stage_cron_job_on_master
-    displayName: Cron job  on master
+  - template: /.azure-ci/stages/stage_scheduled_test.yml
 
-    condition: eq(variables['Build.Reason'], 'Schedule')
-
-    jobs:
-      - template: .azure-ci/jobs/test_template.yml
-        parameters:
-          name: test_stage_cron_job_on_master
-          message: Cron job on master
-
-  #########
   # Stage 3 - Building bottles on PR
-  #########
-  - stage: stage_build_bottle
-    displayName: Build bottles
+  - template: /.azure-ci/stages/stage_build_bottles.yml
 
-    condition: eq(variables['Build.Reason'], 'PullRequest')
-
-    jobs:
-      - template: .azure-ci/jobs/test_template.yml
-        parameters:
-          name: test_stage_build_bottle
-          message: Build bottles
-      # - template: .azure-ci/brew_test_bot.yml
-      #   parameters:
-      #     name: brew_test_bot_macOS_10_14
-      #     displayName: for macOS Mojave (10.14)
-      #     vmImage: macOS-10.14
-      #     xcode: Xcode_10.2
-
-      # - template: .azure-ci/brew_test_bot.yml
-      #   parameters:
-      #     name: brew_test_bot_macOS_10_13
-      #     displayName: for macOS High Sierra (10.13)
-      #     vmImage: macOS-10.13
-      #     xcode: Xcode_10.1
-
-  #########
   # Stage 4 - Uploading bottles to Bintray
-  #########
-  - stage: stage_upload_bottles
-    displayName: Upload bottles
+  - template: /.azure-ci/stages/stage_upload_bottles.yml
 
-    dependsOn:
-      - stage_build_bottle
-
-    condition: and(succeeded('stage_build_bottle'), eq(variables['Build.Reason'], 'PullRequest'))
-
-    jobs:
-      - template: .azure-ci/jobs/test_template.yml
-        parameters:
-          name: test_stage_upload_bottles
-          message: Upload bottles
-      # - template: .azure-ci/brew_test_bot_ci_upload.yml
-      #   parameters:
-      #     name: Upload bottles
-
-  #########
-  # Stage 5 - Auto publish revision bumps
-  #########
-  - stage: stage_publish_revision_bump
-    displayName: Publish revision bump
-
-    dependsOn:
-      - stage_upload_bottles
-
-    condition: |
-      and(
-        succeeded('stage_upload_bottles'),
-        eq(variables['Build.Reason'], 'PullRequest'),
-        eq(variables['System.PullRequest.IsFork'], False),
-        contains(variables['System.PullRequest.SourceBranch'], 'revision-bump')
-      )
-
-    jobs:
-      - template: .azure-ci/jobs/test_template.yml
-        parameters:
-          name: test_stage_publish_revision_bump
-          message: Publish revision bump
-
-      - job: test_pr_message_condition
-        displayName: Test PR message condition
-
-        pool:
-          vmImage: macOS-10.14
-
-        steps:
-
-        - bash: |
-            echo "The PR can be merged as the name is ok"
-            git log
-            git show
-            echo $RANDOM
-          displayName: Step - Test PR message condition
+  # Stage 5 - Auto pull/publish revision bumps
+  - template: /.azure-ci/stages/stage_pull_revision_bump.yml
