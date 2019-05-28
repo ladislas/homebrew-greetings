@@ -31,5 +31,13 @@ stages:
                   FAILING_FORMULAE+=$formula
                 fi
               done
-              echo "The following formulae failed: $FAILING_FORMULAE"
+              if [ ${#FAILING_FORMULAE[@]} -eq 0 ]; then
+                echo "All formulae passed the test, nothing to worry about"
+                exit 0
+              else
+                echo "The following formulae failed: $FAILING_FORMULAE"
+                echo "A new PR will be created to bump the revision and rebuild"
+                echo "the formulae."
+              fi
+
             displayName: Step - Testing Formulae
