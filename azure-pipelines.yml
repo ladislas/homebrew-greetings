@@ -102,29 +102,7 @@ stages:
   #########
   # Stage 3 - Building bottles on PR
   #########
-  - stage: stage_build_bottle
-    displayName: Build bottles
-
-    condition: eq(variables['Build.Reason'], 'PullRequest')
-
-    jobs:
-      - template: .azure-ci/jobs/test_template.yml
-        parameters:
-          name: test_stage_build_bottle
-          message: Build bottles
-      # - template: .azure-ci/brew_test_bot.yml
-      #   parameters:
-      #     name: brew_test_bot_macOS_10_14
-      #     displayName: for macOS Mojave (10.14)
-      #     vmImage: macOS-10.14
-      #     xcode: Xcode_10.2
-
-      # - template: .azure-ci/brew_test_bot.yml
-      #   parameters:
-      #     name: brew_test_bot_macOS_10_13
-      #     displayName: for macOS High Sierra (10.13)
-      #     vmImage: macOS-10.13
-      #     xcode: Xcode_10.1
+  - template: .azure-ci/stages/stage_build_bottles.yml
 
   #########
   # Stage 4 - Uploading bottles to Bintray
@@ -133,9 +111,9 @@ stages:
     displayName: Upload bottles
 
     dependsOn:
-      - stage_build_bottle
+      - stage_build_bottles
 
-    condition: and(succeeded('stage_build_bottle'), eq(variables['Build.Reason'], 'PullRequest'))
+    condition: and(succeeded('stage_build_bottles'), eq(variables['Build.Reason'], 'PullRequest'))
 
     jobs:
       - template: .azure-ci/jobs/test_template.yml
