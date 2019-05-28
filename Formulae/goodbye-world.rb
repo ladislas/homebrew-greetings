@@ -1,5 +1,5 @@
 class GoodbyeWorld < Formula
-  desc "Simple C++ Goodbye World CLI to play with Homebrew & Azure Pipelines"
+  desc "Simple C++ Goodbye World CLI to play with Homebrew & Azure Pipelines to test revision bump"
   homepage "https://github.com/ladislas/goodbye-world"
 
   url "https://github.com/ladislas/goodbye-world/archive/2.0.0.tar.gz"
