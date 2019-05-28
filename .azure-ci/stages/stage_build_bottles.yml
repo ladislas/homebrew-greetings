@@ -7,7 +7,8 @@ stages:
   - stage: stage_build_bottles
     displayName: Build bottles
 
-    condition: eq(variables['Build.Reason'], 'PullRequest')
+    condition: |
+      eq(variables['Build.Reason'], 'PullRequest')
 
     jobs:
       - template: ../jobs/test_template.yml

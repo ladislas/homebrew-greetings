@@ -107,22 +107,7 @@ stages:
   #########
   # Stage 4 - Uploading bottles to Bintray
   #########
-  - stage: stage_upload_bottles
-    displayName: Upload bottles
-
-    dependsOn:
-      - stage_build_bottles
-
-    condition: and(succeeded('stage_build_bottles'), eq(variables['Build.Reason'], 'PullRequest'))
-
-    jobs:
-      - template: .azure-ci/jobs/test_template.yml
-        parameters:
-          name: test_stage_upload_bottles
-          message: Upload bottles
-      # - template: .azure-ci/brew_test_bot_ci_upload.yml
-      #   parameters:
-      #     name: Upload bottles
+  - template: .azure-ci/stages/stage_upload_bottles.yml
 
   #########
   # Stage 5 - Auto pull/publish revision bumps
