@@ -158,6 +158,7 @@ stages:
     condition: |
       and(
         succeeded('stage_upload_bottles'),
+        eq(variables['Build.Reason'], 'PullRequest')
       )
 
     jobs:
