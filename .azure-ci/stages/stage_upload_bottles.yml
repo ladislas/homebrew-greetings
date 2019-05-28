@@ -5,7 +5,7 @@
 stages:
 
   - stage: stage_upload_bottles
-    displayName: Upload bottles
+    displayName: Stage - Upload bottles
 
     dependsOn:
       - stage_build_bottles
