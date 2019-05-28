@@ -159,6 +159,7 @@ stages:
       and(
         succeeded('stage_upload_bottles'),
         eq(variables['Build.Reason'], 'PullRequest'),
+        eq(variables['System.PullRequest.IsFork'], False),
         contains(variables['System.PullRequest.SourceBranch'], 'revision-bump')
       )
 
