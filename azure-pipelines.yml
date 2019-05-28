@@ -21,7 +21,6 @@ pr:
 variables:
 
   - group: bintray
-  - group: github
   - group: ssh
 
   - name: brew_tap_path
