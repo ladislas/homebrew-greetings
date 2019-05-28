@@ -8,10 +8,28 @@ stages:
     displayName: Stage - Scheduled Test on master
 
     condition: |
-      eq(variables['Build.Reason'], 'Schedule')
+      eq(variables['Build.Reason'], 'PullRequest')
 
     jobs:
-      - template: /.azure-ci/jobs/test_template.yml
-        parameters:
-          name: test_stage_cron_job_on_master
-          message: Scheduled Test on master
+
+      - job: job_scheduled_test
+        displayName: Job - Scheduled Test on master
+
+        pool:
+          vmImage: macOS-10.14
+
+        steps:
+
+          - bash: |
+              FAILING_FORMULAE=()
+              for formula in Formulae/*
+              do
+                echo "Testing $formula"
+                brew install $formula
+                brew test $formula && brew linkage --test $formula
+                if [ $? -eq 1 ]; then
+                  FAILING_FORMULAE+=$formula
+                fi
+              done
+              echo "The following formulae failed: $FAILING_FORMULAE"
+            displayName: Step - Testing Formulae
