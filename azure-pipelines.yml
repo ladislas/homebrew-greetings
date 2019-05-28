@@ -158,7 +158,8 @@ stages:
     condition: |
       and(
         succeeded('stage_upload_bottles'),
-        eq(variables['Build.Reason'], 'PullRequest')
+        eq(variables['Build.Reason'], 'PullRequest'),
+        not(variables['System.PullRequest.IsFork'])
       )
 
     jobs:
