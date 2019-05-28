@@ -159,7 +159,7 @@ stages:
       and(
         succeeded('stage_upload_bottles'),
         eq(variables['Build.Reason'], 'PullRequest'),
-        not(variables['System.PullRequest.IsFork'])
+        contains(variables['System.PullRequest.SourceBranch'], 'revision-bump')
       )
 
     jobs:
