@@ -21,6 +21,7 @@ pr:
 variables:
 
   - group: bintray
+  - group: github
   - group: ssh
 
   - name: brew_tap_path
@@ -155,10 +156,31 @@ stages:
     dependsOn:
       - stage_upload_bottles
 
-    condition: and(succeeded('stage_upload_bottles'), eq(variables['Build.Reason'], 'PullRequest'))
+    condition: |
+      and(
+        succeeded('stage_upload_bottles'),
+        eq(variables['Build.Reason'], 'PullRequest'),
+        not(variables['System.PullRequest.IsFork']),
+        contains(variables['System.PullRequest.SourceBranch'], 'revision-bump')
+      )
 
     jobs:
       - template: .azure-ci/jobs/test_template.yml
         parameters:
           name: test_stage_publish_revision_bump
           message: Publish revision bump
+
+      - job: test_pr_message_condition
+        displayName: Test PR message condition
+
+        pool:
+          vmImage: macOS-10.14
+
+        steps:
+
+        - bash: |
+            echo "The PR can be merged as the name is ok"
+            git log
+            git show
+            echo $RANDOM
+          displayName: Step - Test PR message condition
