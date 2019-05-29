@@ -9,8 +9,9 @@ stages:
 
     condition: |
       or(
-        eq(variables['Build.Reason'], 'Schedule'),
-        contains(variables['System.PullRequest.SourceBranch'], 'scheduled')
+        contains(variables['System.PullRequest.SourceBranch'], 'scheduled'),
+        eq(variables['Build.Reason'], 'PullRequest'),
+        eq(variables['Build.Reason'], 'Schedule')
       )
 
     jobs:
