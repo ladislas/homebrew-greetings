@@ -68,7 +68,7 @@ stages:
               git config --global user.name "Ladislas de Toldi"
               git config --global user.email "ladislas@detoldi.me"
               git config --global hub.protocol https
-              git config credential.helper '!f() { sleep 1; echo "username=Ladislas de Toldi"; echo "password=${GITHUB_TOKEN}"; }; f'
+              git config credential.helper '!f() { sleep 1; echo "username=ladislas"; echo "password=${GITHUB_TOKEN}"; }; f'
               hub fetch origin
               hub checkout master
               git reset --hard origin/master
@@ -82,7 +82,6 @@ stages:
               hub pull-request --push
             displayName: Step - Create revision bump PR
             env:
-              HOMEBREW_NO_AUTO_UPDATE: 1
               HUB_VERBOSE: 1
               FAILING_FORMULAE: $(failing_formulae)
               GITHUB_USER: $(github_user)
