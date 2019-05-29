@@ -38,6 +38,8 @@ variables:
     value: ladislas
   - name: github_email
     value: ladislas@detoldi.me
+  - name: github_token
+    value: $(github.token)
   - name: github_tap_repo
     value: homebrew-greetings
 
