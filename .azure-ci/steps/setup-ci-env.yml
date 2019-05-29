@@ -12,11 +12,7 @@ steps:
   - bash: |
       set -ex
       sudo xcode-select --switch /Applications/$XCODE_VERSION.app/Contents/Developer
-      brew unlink parallel
-      brew install moreutils tree
-      (git -C /usr/local/Homebrew fetch origin --tags) | ts -i
-      (git -C /usr/local/Homebrew reset --hard origin/master) | ts -i
-      brew update | ts -i
+      brew update
     displayName: Setup CI Environment
     env:
       XCODE_VERSION: ${{ parameters.xcode }}
