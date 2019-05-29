@@ -22,6 +22,7 @@ variables:
 
   - group: bintray
   - group: ssh
+  - group: github
 
   - name: brew_tap_path
     value: /usr/local/Homebrew/Library/Taps
