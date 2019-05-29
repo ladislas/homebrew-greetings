@@ -63,8 +63,10 @@ stages:
 
           - bash: |
               brew install hub
+              git config --global user.name "Ladislas de Toldi"
+              git config --global user.email "ladislas@detoldi.me"
               git config --global hub.protocol https
-              git config credential.helper '!f() { sleep 1; echo "username=${GITHUB_USER}"; echo "email=${GITHUB_EMAIL}"; echo "password=${GITHUB_TOKEN}"; }; f'
+              git config credential.helper '!f() { sleep 1; echo "username=${GITHUB_USER}"; echo "password=${GITHUB_TOKEN}"; }; f'
               hub fetch origin
               hub checkout master
               git reset --hard origin/master
