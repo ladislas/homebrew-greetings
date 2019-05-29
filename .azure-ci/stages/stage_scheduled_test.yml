@@ -8,7 +8,10 @@ stages:
     displayName: Stage - Scheduled Test on master
 
     condition: |
-      eq(variables['Build.Reason'], 'Schedule')
+      or(
+        eq(variables['Build.Reason'], 'Schedule'),
+        contains(variables['System.PullRequest.SourceBranch'], 'scheduled')
+      )
 
     jobs:
 
@@ -68,7 +71,7 @@ stages:
               git config --global user.name "Ladislas de Toldi"
               git config --global user.email "ladislas@detoldi.me"
               git config --global hub.protocol https
-              git config credential.helper '!f() { sleep 1; echo "username=ladislas"; echo "password=${GITHUB_TOKEN}"; }; f'
+              git config credential.helper '!f() { sleep 1; echo "username=${GITHUB_USER}"; echo "password=${GITHUB_TOKEN}"; }; f'
               hub fetch origin
               hub checkout master
               git reset --hard origin/master
