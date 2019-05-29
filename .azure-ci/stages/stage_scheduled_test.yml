@@ -52,7 +52,11 @@ stages:
 
         dependsOn: job_scheduled_test
 
-        condition: and(succeeded('job_scheduled_test'), ne(dependencies.job_scheduled_test.outputs['test_formulae.failing_formulae'], '')
+        condition: |
+          and(
+            succeeded('job_scheduled_test'),
+            ne(dependencies.job_scheduled_test.outputs['test_formulae.failing_formulae'], '')
+          )
 
         variables:
           failing_formulae: $[ dependencies.job_scheduled_test.outputs['test_formulae.failing_formulae'] ]
