@@ -68,12 +68,12 @@ stages:
               git config --global user.name "Ladislas de Toldi"
               git config --global user.email "ladislas@detoldi.me"
               git config --global hub.protocol https
-              git config credential.helper '!f() { sleep 1; echo "username=${GITHUB_USER}"; echo "password=${GITHUB_TOKEN}"; }; f'
+              git config credential.helper '!f() { sleep 1; echo "username=Ladislas de Toldi"; echo "password=${GITHUB_TOKEN}"; }; f'
               hub fetch origin
               hub checkout master
               git reset --hard origin/master
               DATE_TIME=$( date +"%Y%m%d_%H%M" )
-              FAILING_FORMULAE_LIST=$( IFS=$'_'; echo "${FAILING_FORMULAE[*]}" )
+              FAILING_FORMULAE_LIST=$( IFS=$'_'; echo "${FAILING_FORMULAE[*]}" | sed 's/Formulae\///g' | sed 's/\.rb//g' )
               git checkout -b revision-bump/$DATE_TIME-$FAILING_FORMULAE_LIST
               DATE_TIME_LITTERAL=$( date +"%Y/%m/%d at %T" )
               for formula in $FAILING_FORMULAE; do
