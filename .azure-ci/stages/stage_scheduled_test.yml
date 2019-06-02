@@ -9,11 +9,11 @@ stages:
 
     condition: |
       or(
-        and(
-          contains(variables['System.PullRequest.SourceBranch'], 'dev_scheduled_test')
-          ,eq(variables['Build.Reason'], 'PullRequest')
+        eq(variables['Build.Reason'], 'Schedule')
+        ,and(
+          eq(variables['Build.Reason'], 'PullRequest')
+          ,contains(variables['System.PullRequest.SourceBranch'], 'dev_scheduled_test')
         )
-        ,eq(variables['Build.Reason'], 'Schedule')
       )
 
     jobs:
