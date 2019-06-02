@@ -33,5 +33,5 @@ stages:
           - template: /.azure-ci/steps/install-tap.yml
 
           - bash: |
-              brew test-bot goodbye-world
+              brew test-bot
             displayName: Run brew test-bot
