@@ -9,9 +9,11 @@ stages:
 
     condition: |
       or(
-        contains(variables['System.PullRequest.SourceBranch'], 'scheduled'),
-        eq(variables['Build.Reason'], 'PullRequest'),
-        eq(variables['Build.Reason'], 'Schedule')
+        and(
+          contains(variables['System.PullRequest.SourceBranch'], 'dev_scheduled_test')
+          ,eq(variables['Build.Reason'], 'PullRequest')
+        )
+        ,eq(variables['Build.Reason'], 'Schedule')
       )
 
     jobs:
@@ -37,8 +39,6 @@ stages:
                   FAILING_FORMULAE+=$formula
                 fi
 
-                FAILING_FORMULAE+=$formula
-
               done
 
               if [ ${#FAILING_FORMULAE[@]} -eq 0 ]; then
@@ -48,7 +48,8 @@ stages:
 
               else
 
-                echo "The following formulae failed: $FAILING_FORMULAE"
+                echo "The following formulae failed:"
+                echo "\t$FAILING_FORMULAE"
                 echo "A new PR will be created to bump the revision and rebuild"
                 echo "the formulae."
 
@@ -81,8 +82,8 @@ stages:
           - template: /.azure-ci/steps/setup-ci-env.yml
 
           - bash: |
-              DATE_TIME=$( date +"%Y%m%d_%H%M" )
-              DATE_TIME_LONG=$( date +"%Y/%m/%d at %T" )
+              DATE_TIME=$( date +"%Y%m%d_%H%M_%Z" )
+              DATE_TIME_LONG=$( date +"%Y/%m/%d at %T %Z" )
 
               FAILING_FORMULAE_LIST=$(
                 IFS=$'_';
