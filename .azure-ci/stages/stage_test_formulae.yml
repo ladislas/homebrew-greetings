@@ -33,10 +33,5 @@ stages:
           - template: /.azure-ci/steps/install-tap.yml
 
           - bash: |
-              for formula in Formulae/* ; do
-
-                echo "brew test-bot $formula"
-                brew test-bot $formula
-
-              done
+              brew test-bot goodbye-world
             displayName: Run brew test-bot
