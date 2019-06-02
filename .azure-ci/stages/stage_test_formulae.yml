@@ -4,8 +4,8 @@
 
 stages:
 
-  - stage: stage_testing_formulae_on_master
-    displayName: Stage - Testing Formulae on master
+  - stage: stage_test_formulae_on_master
+    displayName: Stage - Test Formulae on master
 
     condition: |
       eq(variables['Build.Reason'], 'IndividualCI')
@@ -14,4 +14,4 @@ stages:
       - template: /.azure-ci/jobs/test_template.yml
         parameters:
           name: test_stage_testing_formulae_on_master
-          message: Testing Formulae on master
+          message: Test Formulae on master
