@@ -22,6 +22,7 @@ variables:
 
   - group: bintray
   - group: ssh
+  - group: github
 
   - name: brew_tap_path
     value: /usr/local/Homebrew/Library/Taps
@@ -38,6 +39,8 @@ variables:
     value: ladislas
   - name: github_email
     value: ladislas@detoldi.me
+  - name: github_token
+    value: $(github.token)
   - name: github_tap_repo
     value: homebrew-greetings
 
