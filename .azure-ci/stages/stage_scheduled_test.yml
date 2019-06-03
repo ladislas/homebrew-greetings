@@ -9,11 +9,11 @@ stages:
 
     condition: |
       or(
-        and(
-          contains(variables['System.PullRequest.SourceBranch'], 'dev_scheduled_test')
-          ,eq(variables['Build.Reason'], 'PullRequest')
+        eq(variables['Build.Reason'], 'Schedule')
+        ,and(
+          eq(variables['Build.Reason'], 'PullRequest')
+          ,contains(variables['System.PullRequest.SourceBranch'], 'dev_scheduled_test')
         )
-        ,eq(variables['Build.Reason'], 'Schedule')
       )
 
     jobs:
@@ -31,8 +31,11 @@ stages:
 
               for formula in Formulae/* ; do
 
-                echo "Testing $formula"
+                echo "\n"
+                echo "Installing $formula"
                 brew install $formula
+
+                echo "\n"
                 brew test $formula && brew linkage --test $formula
 
                 if [ $? -eq 1 ]; then
