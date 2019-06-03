@@ -1,8 +1,5 @@
 # File: .azure-ci/brew_test_bot_ci_upload.yml
 
-parameters:
-  name: ''
-
 jobs:
 
 - job: brew_test_bot_ci_upload
