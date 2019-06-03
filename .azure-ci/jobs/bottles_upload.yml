@@ -30,11 +30,8 @@ jobs:
       displayName: Download artifacts
 
     - bash: |
-        tree
         mv *-bottle-*/* ./
         rm -rf *-bottle-*
-        cat *.json
-        tree
       displayName: Move bottle files to cwd
 
     - bash: |
