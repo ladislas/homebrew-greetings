@@ -24,3 +24,4 @@ steps:
         git checkout pr
       fi
     displayName: Checkout $(System.PullRequest.SourceBranch) - pr-$(System.PullRequest.PullRequestNumber) branch
+    condition: eq(variables['Build.Reason'], 'PullRequest')
