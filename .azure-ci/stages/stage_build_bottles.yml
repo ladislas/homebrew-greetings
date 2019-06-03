@@ -11,20 +11,17 @@ stages:
       eq(variables['Build.Reason'], 'PullRequest')
 
     jobs:
-      - template: /.azure-ci/jobs/test_template.yml
-        parameters:
-          name: test_stage_build_bottle
-          message: Build bottles
-      # - template: .azure-ci/brew_test_bot.yml
-      #   parameters:
-      #     name: brew_test_bot_macOS_10_14
-      #     displayName: for macOS Mojave (10.14)
-      #     vmImage: macOS-10.14
-      #     xcode: Xcode_10.2
 
-      # - template: .azure-ci/brew_test_bot.yml
-      #   parameters:
-      #     name: brew_test_bot_macOS_10_13
-      #     displayName: for macOS High Sierra (10.13)
-      #     vmImage: macOS-10.13
-      #     xcode: Xcode_10.1
+      - template: /.azure-ci/jobs/bottles_build.yml
+        parameters:
+          name: brew_test_bot_macOS_10_14
+          displayName: for macOS Mojave (10.14)
+          vmImage: macOS-10.14
+          xcode: Xcode_10.2
+
+      - template: /.azure-ci/jobs/bottles_build.yml
+        parameters:
+          name: brew_test_bot_macOS_10_13
+          displayName: for macOS High Sierra (10.13)
+          vmImage: macOS-10.13
+          xcode: Xcode_10.1

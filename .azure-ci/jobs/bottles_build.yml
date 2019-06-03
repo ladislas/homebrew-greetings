@@ -1,4 +1,4 @@
-# File: .azure-ci/brew_test_bot.yml
+# File: .azure-ci/jobs/bottles_build.yml
 
 parameters:
   name: ''
@@ -18,25 +18,23 @@ jobs:
 
   variables:
     xcode_version: ${{ parameters.xcode }}
-    artifact_name: ${{ parameters.vmImage }}
+    os_version: ${{ parameters.vmImage }}
 
   steps:
 
     # Setup CI environment
-    - template: steps/setup-ci-env.yml
+    - template: /.azure-ci/steps/setup-ci-env.yml
       parameters:
         xcode: $(xcode_version)
 
     # Install your tap
-    - template: steps/install-tap.yml
+    - template: /.azure-ci/steps/install-tap.yml
 
     # When working on a fork of homebrew/test-bot, run this step to tap your
     # repository and checkout the correct feature branch
-    - template: steps/tap-dev-test-bot.yml
+    # - template: steps/tap-dev-test-bot.yml
 
     - bash: |
-        echo UPSTREAM_GIT_URL:      $(UPSTREAM_GIT_URL)
-        echo UPSTREAM_PULL_REQUEST: $(UPSTREAM_PULL_REQUEST)
         brew test-bot --root-url=$(bintray_root_url) | ts -i
       displayName: Run brew test-bot
       env:
@@ -44,11 +42,11 @@ jobs:
         UPSTREAM_PULL_REQUEST: $(UPSTREAM_PULL_REQUEST)
 
     - script: |
-        RANDOM_FORMULA_ID="$(uuidgen)"
-        echo "Random Formula ID is: $RANDOM_FORMULA_ID"
-        echo "##vso[task.setvariable variable=formula_id;isOutput=true]$RANDOM_FORMULA_ID"
+        RANDOM_ARTIFACT_ID="$(uuidgen)"
+        echo "Random Formula ID is: $RANDOM_ARTIFACT_ID"
+        echo "##vso[task.setvariable variable=artifact_id;isOutput=true]$RANDOM_ARTIFACT_ID"
       displayName: Set formula variable
-      name: set_formula_name
+      name: set_artifact_id
 
     - bash: |
         cp *.bottle.* $(Build.ArtifactStagingDirectory)
@@ -56,6 +54,6 @@ jobs:
 
     - task: PublishPipelineArtifact@0
       inputs:
-        artifactName: $(set_formula_name.formula_id)-bottle-$(artifact_name)
+        artifactName: $(set_artifact_id.artifact_id)-bottle-$(os_version)
         targetPath: $(Build.ArtifactStagingDirectory)
-      displayName: Publish formula-bottle-$(artifact_name)
+      displayName: Publish formula-bottle-$(os_version)
