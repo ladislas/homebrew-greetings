@@ -31,8 +31,11 @@ stages:
 
               for formula in Formulae/* ; do
 
-                echo "Testing $formula"
+                echo "\n"
+                echo "Installing $formula"
                 brew install $formula
+
+                echo "\n"
                 brew test $formula && brew linkage --test $formula
 
                 if [ $? -eq 1 ]; then
