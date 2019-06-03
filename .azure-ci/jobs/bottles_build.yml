@@ -35,7 +35,7 @@ jobs:
     # - template: steps/tap-dev-test-bot.yml
 
     - bash: |
-        brew test-bot --root-url=$(bintray_root_url) | ts -i
+        brew test-bot --root-url=$(bintray_root_url)
       displayName: Run brew test-bot
       env:
         UPSTREAM_GIT_URL: $(UPSTREAM_GIT_URL)
