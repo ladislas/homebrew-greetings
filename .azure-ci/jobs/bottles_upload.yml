@@ -21,7 +21,7 @@ jobs:
 
     # When working on a fork of homebrew/test-bot, run this step to tap your
     # repository and checkout the correct feature branch
-    # - template: steps/tap-dev-test-bot.yml
+    # - template: /.azure-ci/steps/tap-dev-test-bot.yml
 
     - task: DownloadPipelineArtifact@1
       inputs:
