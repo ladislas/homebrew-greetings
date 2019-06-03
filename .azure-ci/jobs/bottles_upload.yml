@@ -1,8 +1,5 @@
 # File: .azure-ci/brew_test_bot_ci_upload.yml
 
-parameters:
-  name: ''
-
 jobs:
 
 - job: brew_test_bot_ci_upload
@@ -20,11 +17,11 @@ jobs:
         #sshPassphrase: $(ssh_passphrase) # Optional
         sshKeySecureFile: $(ssh_secure_file)
 
-    - template: steps/setup-ci-env.yml
+    - template: /.azure-ci/steps/setup-ci-env.yml
 
     # When working on a fork of homebrew/test-bot, run this step to tap your
     # repository and checkout the correct feature branch
-    # - template: steps/tap-dev-test-bot.yml
+    # - template: /.azure-ci/steps/tap-dev-test-bot.yml
 
     - task: DownloadPipelineArtifact@1
       inputs:
@@ -33,17 +30,12 @@ jobs:
       displayName: Download artifacts
 
     - bash: |
-        echo UPSTREAM_GIT_URL:      $(UPSTREAM_GIT_URL)
-        echo UPSTREAM_PULL_REQUEST: $(UPSTREAM_PULL_REQUEST)
-        tree
         mv *-bottle-*/* ./
         rm -rf *-bottle-*
-        cat *.json
-        tree
       displayName: Move bottle files to cwd
 
     - bash: |
-        brew test-bot --verbose --ci-upload --bintray-org=$(bintray_org) --git-name=$(github_user) --git-email=$(github_email) | ts -i
+        brew test-bot --verbose --ci-upload --bintray-org=$(bintray_org) --git-name=$(github_user) --git-email=$(github_email)
       displayName: Run brew test-bot --ci-upload
       env:
         HOMEBREW_BINTRAY_USER: $(HOMEBREW_BINTRAY_USER)
