@@ -35,7 +35,7 @@ jobs:
       displayName: Move bottle files to cwd
 
     - bash: |
-        brew test-bot --verbose --ci-upload --bintray-org=$(bintray_org) --git-name=$(github_user) --git-email=$(github_email) | ts -i
+        brew test-bot --verbose --ci-upload --bintray-org=$(bintray_org) --git-name=$(github_user) --git-email=$(github_email)
       displayName: Run brew test-bot --ci-upload
       env:
         HOMEBREW_BINTRAY_USER: $(HOMEBREW_BINTRAY_USER)
