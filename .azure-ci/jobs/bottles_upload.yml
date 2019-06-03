@@ -17,7 +17,7 @@ jobs:
         #sshPassphrase: $(ssh_passphrase) # Optional
         sshKeySecureFile: $(ssh_secure_file)
 
-    - template: steps/setup-ci-env.yml
+    - template: /.azure-ci/steps/setup-ci-env.yml
 
     # When working on a fork of homebrew/test-bot, run this step to tap your
     # repository and checkout the correct feature branch
@@ -30,8 +30,6 @@ jobs:
       displayName: Download artifacts
 
     - bash: |
-        echo UPSTREAM_GIT_URL:      $(UPSTREAM_GIT_URL)
-        echo UPSTREAM_PULL_REQUEST: $(UPSTREAM_PULL_REQUEST)
         tree
         mv *-bottle-*/* ./
         rm -rf *-bottle-*
