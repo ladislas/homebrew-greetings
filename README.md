@@ -4,6 +4,22 @@
 
 > ⚠️ work in progress... 🚧
 
+## Table of content
+
+* [About](#about)
+* [How to setup Azure Pipelines](#how-to-setup-azure-pipelines)
+* [Customize `azure-pipelines.yml`](#customize--azure-pipelinesyml-)
+  + [Create variable groups & upload secure file on Azure Pipelines](#create-variable-groups---upload-secure-file-on-azure-pipelines)
+  + [Setup Bintray](#setup-bintray)
+* [Stages explained](#stages-explained)
+  + [Stage 1 - Testing formulae on `master`](#stage-1---testing-formulae-on--master-)
+  + [Stage 2 - Scheduled job to test formulae](#stage-2---scheduled-job-to-test-formulae)
+  + [Stage 3 - Building bottles on PR](#stage-3---building-bottles-on-pr)
+  + [Stage 4 - Uploading bottles to Bintray](#stage-4---uploading-bottles-to-bintray)
+  + [Stage 5 - Auto publish revision bumps](#stage-5---auto-publish-revision-bumps)
+  + [What's a *special PR*?](#what-s-a--special-pr--)
+* [Documentation](#documentation)
+
 ## About
 
 This tap's only purpose it to create a working example showing how to build bottles for taps using Azure Pipelines.
