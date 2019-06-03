@@ -18,4 +18,4 @@ stages:
 
     jobs:
 
-      - template: .azure-ci/jobs/bottles_upload.yml
+      - template: /.azure-ci/jobs/bottles_upload.yml
