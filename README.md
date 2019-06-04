@@ -34,6 +34,7 @@ To add the ability to provide users with bottle for the taps you maintain, you n
 1. add Azure Pipelines for you repository - [Create your first pipeline](https://docs.microsoft.com/en-us/azure/devops/pipelines/create-first-pipeline)
 1. copy [`azure-pipelines.yml`](https://github.com/ladislas/homebrew-greetings/blob/master/azure-pipelines.yml) and [`.azure-ci`](https://github.com/ladislas/homebrew-greetings/tree/master/.azure-ci) directory to the root of your project
 1. `git commit && git push` the changes
+1. Create a new branch, `brew bump-revision` your formulae and create a PR
 
 Then keep reading to customize your `azure-pipelines.yml` file.
 
@@ -43,7 +44,7 @@ You need to change the `# Github variables` and the `# Bintray variables` in `az
 
 ### Create variable groups & upload secure file on Azure Pipelines
 
-You need to create two Variable Groups to save logins, passwords and keys that will be used in the process:
+You need to create two Variable Groups (see [Create a variable group](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups)) to save logins, passwords and keys that will be used in the process:
 
 - `bintray` variable group:
 	- `bintray.user` - your Bintray username
@@ -56,17 +57,22 @@ You need to create two Variable Groups to save logins, passwords and keys that w
 
 To generate the needed SSH keys/files, follow the [Connecting to GitHub with SSH instructions](https://help.github.com/en/articles/connecting-to-github-with-ssh)
 
-You also need to add your SSH private key as a Secure File and give it the same name as `ssh.secure_file`. The key file can be found in `~/.ssh` with the name `id_rsa` (or whatever name you gave it).
+You also need to add your SSH private key as a Secure File (see [Create a secure file](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/secure-files)) and give it the same name as `ssh.secure_file`. The key file can be found on your computer in `~/.ssh` with the name `id_rsa` (or whatever name you gave it).
 
 ### Setup Bintray
 
-Your bottles will be uploaded on Bintray, so you need to:
+Your bottles will be uploaded on [Bintray](https://bintray.com), so you need to:
 
 - create an account (free for open source) and if needed a new organization (this is optional)
 - create a new repository with the name `bottles-{your chosen name}` such as [`bottles-greetings`](https://bintray.com/ladislas/bottles-greetings)
 - create a new package inside the repository with the name of the formula, such as `hello-world` or `goodbye-world`
 - in `azure-pipelines.yml`, update `bintray_org` and `bintray_repo` variables
 
+## FAQ
+
+### Can I use this *framework* with a `test bot`?
+
+Yes, of course. You just need to set the `# GitHub variables` to those of your test bot account, including the ssh key.
 
 ## Stages explained
 
@@ -177,9 +183,13 @@ When a *special PR* is created, it will be automatically merge and bottles will 
 What makes them special is their name, which looks like this:
 
 ```
-revision-bump/20190529_1653-goodbye-world
+# Template:
 
-Revision-bump/${date_time}-${formulae list}
+revision-bump/${date_time}-${formulae list}
+
+# Example:
+
+revision-bump/20190529_1653-goodbye-world
 ```
 
 ## Documentation
