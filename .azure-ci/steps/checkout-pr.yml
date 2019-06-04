@@ -7,4 +7,4 @@ steps:
         git fetch origin "master:master" "pull/$SYSTEM_PULLREQUEST_PULLREQUESTNUMBER/head:pr"
         git checkout pr
       fi
-    displayName: Checkout $(System.PullRequest.SourceBranch) - pr-$(System.PullRequest.PullRequestNumber) branch
+    displayName: Checkout $(System.PullRequest.SourceBranch) (pr-$(System.PullRequest.PullRequestNumber)) branch
