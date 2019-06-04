@@ -18,4 +18,43 @@ stages:
 
     jobs:
 
-      - template: /.azure-ci/jobs/bottles-upload.yml
+      - job: brew_test_bot_ci_upload
+        displayName: Upload bottles
+
+        pool:
+          vmImage: macOS-10.14
+
+        steps:
+
+          - task: InstallSSHKey@0
+            inputs:
+              hostName: $(ssh_hostname)
+              sshPublicKey: $(ssh_public_key)
+              #sshPassphrase: $(ssh_passphrase) # Optional
+              sshKeySecureFile: $(ssh_secure_file)
+
+          - template: /.azure-ci/steps/setup-ci-env.yml
+
+          # When working on a fork of homebrew/test-bot, run this step to tap your
+          # repository and checkout the correct feature branch
+          # - template: /.azure-ci/steps/tap-dev-test-bot.yml
+
+          - task: DownloadPipelineArtifact@1
+            inputs:
+              itemPattern: '**'
+              downloadPath: $(System.DefaultWorkingDirectory)
+            displayName: Download artifacts
+
+          - bash: |
+              mv *-bottle-*/* ./
+              rm -rf *-bottle-*
+            displayName: Move bottle files to cwd
+
+          - bash: |
+              brew test-bot --verbose --ci-upload --bintray-org=$(bintray_org) --git-name=$(github_user) --git-email=$(github_email)
+            displayName: Run brew test-bot --ci-upload
+            env:
+              HOMEBREW_BINTRAY_USER: $(HOMEBREW_BINTRAY_USER)
+              HOMEBREW_BINTRAY_KEY: $(HOMEBREW_BINTRAY_KEY)
+              UPSTREAM_GIT_URL: $(UPSTREAM_GIT_URL)
+              UPSTREAM_PULL_REQUEST: $(UPSTREAM_PULL_REQUEST)
