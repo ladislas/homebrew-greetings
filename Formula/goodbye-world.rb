@@ -4,6 +4,7 @@ class GoodbyeWorld < Formula
 
   url "https://github.com/ladislas/goodbye-world/archive/2.0.0.tar.gz"
   sha256 "d90ec02e8966c97a07038bf123e709ea0985db8bb354ab3d798457ad71aee086"
+  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/ladislas/bottles-greetings"
