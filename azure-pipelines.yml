@@ -63,10 +63,10 @@ variables:
   - name: ssh_secure_file
     value: $(ssh.secure_file)
 
-  - name: HOMEBREW_BINTRAY_KEY
-    value: $(bintray.key)
-  - name: HOMEBREW_BINTRAY_USER
+  - name: homebrew_bintray_user
     value: $(bintray.user)
+  - name: homebrew_bintray_key
+    value: $(bintray.key)
 
   - name: UPSTREAM_GIT_URL
     value: $(Build.Repository.Uri)
