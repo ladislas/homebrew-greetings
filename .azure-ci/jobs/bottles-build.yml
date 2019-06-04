@@ -1,4 +1,4 @@
-# File: .azure-ci/jobs/bottles_build.yml
+# File: .azure-ci/jobs/bottles-build.yml
 
 parameters:
   name: ''
