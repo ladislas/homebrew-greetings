@@ -35,6 +35,8 @@ variables:
     value: homebrew/homebrew-test-bot
 
   # Github variables
+  - name: github_user_name
+    value: Ladislas de Toldi
   - name: github_user
     value: ladislas
   - name: github_email
