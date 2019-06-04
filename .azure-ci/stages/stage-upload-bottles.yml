@@ -1,4 +1,4 @@
-# File: .azure-ci/stages/stage_upload_bottles.yml
+# File: .azure-ci/stages/stage-upload-bottles.yml
 
 # Stage 4 - Uploading bottles to Bintray
 
@@ -18,4 +18,4 @@ stages:
 
     jobs:
 
-      - template: /.azure-ci/jobs/bottles_upload.yml
+      - template: /.azure-ci/jobs/bottles-upload.yml
