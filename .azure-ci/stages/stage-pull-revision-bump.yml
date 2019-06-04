@@ -34,8 +34,6 @@ stages:
 
           # Setup CI environment
           - template: /.azure-ci/steps/setup-ci-env.yml
-            parameters:
-              xcode: $(xcode_version)
 
           # Install your tap
           - template: /.azure-ci/steps/install-tap.yml
