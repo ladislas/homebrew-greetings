@@ -4,6 +4,7 @@ class HelloWorld < Formula
 
   url "https://github.com/ladislas/hello-world/archive/8.0.0.tar.gz"
   sha256 "0caa1306c4a6c629aed2b66080375c24fc3b820fd803f9e327ae140a30da336d"
+  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/ladislas/bottles-greetings"
