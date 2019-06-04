@@ -59,5 +59,4 @@ stages:
             displayName: Step - Test PR message condition
             env:
               GITHUB_USER: $(github_user)
-              GITHUB_EMAIL: $(github_email)
               GITHUB_TOKEN: $(github.token)

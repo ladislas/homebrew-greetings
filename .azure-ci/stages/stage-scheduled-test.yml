@@ -46,15 +46,15 @@ stages:
 
               if [ ${#FAILING_FORMULAE[@]} -eq 0 ]; then
 
-                echo "All formulae passed the test, there's nothing to worry about."
-                echo "We'll try better next time..."
+                echo "All formulae passed the test, there's nothing to worry about. 🎉"
+                echo "We'll try again next time... 💪"
 
               else
 
-                echo "The following formulae failed:"
+                echo "💥 The following formulae failed: ⚠️"
                 echo "\t$FAILING_FORMULAE"
-                echo "A new PR will be created to bump the revision and rebuild"
-                echo "the formulae."
+                echo "🚧 A new PR will be created to bump the revision and rebuild"
+                echo "the formulae.🏗"
 
                 echo "##vso[task.setvariable variable=failing_formulae;isOutput=true]$FAILING_FORMULAE"
 
@@ -104,8 +104,8 @@ stages:
 
               brew install hub
 
-              git config --global user.name "Ladislas de Toldi"
-              git config --global user.email "ladislas@detoldi.me"
+              git config --global user.name "$(github_user_name)"
+              git config --global user.email "$(github_email)"
               git config --global hub.protocol https
 
               git config credential.helper '!f() { sleep 1; echo "username=${GITHUB_USER}"; echo "password=${GITHUB_TOKEN}"; }; f'
@@ -125,5 +125,4 @@ stages:
             env:
               FAILING_FORMULAE: $(failing_formulae)
               GITHUB_USER: $(github_user)
-              GITHUB_EMAIL: $(github_email)
               GITHUB_TOKEN: $(github.token)
