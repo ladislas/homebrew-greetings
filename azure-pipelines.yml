@@ -75,16 +75,16 @@ variables:
 stages:
 
   # Stage 1 - Testing formulae on master
-  - template: /.azure-ci/stages/stage_test_formulae.yml
+  - template: /.azure-ci/stages/stage-test-formulae.yml
 
   # Stage 2 - Cron job to test formulae
-  - template: /.azure-ci/stages/stage_scheduled_test.yml
+  - template: /.azure-ci/stages/stage-scheduled-test.yml
 
   # Stage 3 - Building bottles on PR
-  - template: /.azure-ci/stages/stage_build_bottles.yml
+  - template: /.azure-ci/stages/stage-build-bottles.yml
 
   # Stage 4 - Uploading bottles to Bintray
-  - template: /.azure-ci/stages/stage_upload_bottles.yml
+  - template: /.azure-ci/stages/stage-upload-bottles.yml
 
   # Stage 5 - Auto pull/publish revision bumps
-  - template: /.azure-ci/stages/stage_pull_revision_bump.yml
+  - template: /.azure-ci/stages/stage-pull-revision-bump.yml
