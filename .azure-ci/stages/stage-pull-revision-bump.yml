@@ -32,9 +32,34 @@ stages:
 
         steps:
 
-        - bash: |
-            echo "The PR can be merged as the name is ok"
-            git log
-            git show
-            echo $RANDOM
-          displayName: Step - Test PR message condition
+          # Setup CI environment
+          - template: /.azure-ci/steps/setup-ci-env.yml
+            parameters:
+              xcode: $(xcode_version)
+
+          # Install your tap
+          - template: /.azure-ci/steps/install-tap.yml
+
+          - bash: |
+              brew install hub
+
+              git config --global user.name "$(github_user_name)"
+              git config --global user.email "$(github_email)"
+              git config --global hub.protocol https
+
+              git config credential.helper '!f() { sleep 1; echo "username=${GITHUB_USER}"; echo "password=${GITHUB_TOKEN}"; }; f'
+
+              hub fetch origin
+              hub checkout master
+              git reset --hard origin/master
+
+              brew pull --verbose --bottle --warn-on-publish-failure \
+              --bintray-org=$(bintray_org) --test-bot-user=$(github_user) \
+              https://github.com/$(github_user)/$(github_tap_repo)/pull/$(System.PullRequest.PullRequestNumber)
+
+              hub push
+            displayName: Step - Test PR message condition
+            env:
+              GITHUB_USER: $(github_user)
+              GITHUB_EMAIL: $(github_email)
+              GITHUB_TOKEN: $(github.token)
