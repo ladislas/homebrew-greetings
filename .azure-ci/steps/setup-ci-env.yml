@@ -1,4 +1,4 @@
-# File: .azure-ci/setup-ci-env.yml
+# File: /.azure-ci/steps/setup-ci-env.yml
 
 parameters:
    xcode: 'Xcode_10.2'

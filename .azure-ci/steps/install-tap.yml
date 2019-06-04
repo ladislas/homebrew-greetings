@@ -1,4 +1,4 @@
-# File: .azure-ci/install-tap.yml
+# File: /.azure-ci/steps/install-tap.yml
 
 steps:
 
