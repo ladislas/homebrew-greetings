@@ -9,8 +9,8 @@ class GoodbyeWorld < Formula
   bottle do
     root_url "https://dl.bintray.com/ladislas/bottles-greetings"
     cellar :any_skip_relocation
-    sha256 "06fb29821282b62aabcb00ab2a1d0597806a60038d8f52ed7c2ae9fc51fd2651" => :mojave
-    sha256 "65da43e0b1a8bb155a6553fe606051d17cd48a4595a3dd200575ea59b8ea7637" => :high_sierra
+    sha256 "616a18d2e4c594a1973a398002ff0737efa3632be60dee8a2a644aaf0d1afa7a" => :mojave
+    sha256 "83cfb40fb860de1bcddb000691d064f8a98b7ac101efe88d383e1c386509e01e" => :high_sierra
   end
 
   def install
