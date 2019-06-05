@@ -27,10 +27,8 @@ variables:
   - name: brew_tap_path
     value: /usr/local/Homebrew/Library/Taps
 
-  - name: test_bot_repo
+  - name: test_bot_dev_repo
     value: ladislas/homebrew-test-bot
-  - name: test_bot_repo_branch
-    value: feature/fix-azure-tap-modified-formulae-detection
   - name: test_bot_homebrew_repo
     value: homebrew/homebrew-test-bot
 
