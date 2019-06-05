@@ -4,7 +4,15 @@
 
 > ⚠️ work in progress... 🚧
 
-## Table of content
+## 💡 About
+
+Ever wanted to provide your tap users with handcrafted bottles to save them hours of compilation time?
+
+Now you can!
+
+This repository contains a working example and instructions on how to automate your build workflow to build and upload bottles to Bintray using Azure Pipelines.
+
+## 📑 Table of content
 
 * [About](#about)
 * [How to setup Azure Pipelines](#how-to-setup-azure-pipelines)
@@ -20,40 +28,53 @@
   + [What's a *special PR*?](#what-s-a--special-pr--)
 * [Documentation](#documentation)
 
-## About
+## ⚗️ The process
 
-This tap's only purpose it to create a working example showing how to build bottles for taps using Azure Pipelines.
+1. When a new version of your software becomes available, you create a PR by hand or using `brew bump-formula-pr`.
 
-Bottles for user taps can be very useful if the software you're maintaining takes a lot of time to compile.
+1. Azure Pipelines will test the PR and build bottles for macOS Mojave (10.14) & macOS High Sierra (10.13)
 
-## How to setup Azure Pipelines
+1. If bottles are successfully built, they will be uploaded to Bintray, ready to be published
+
+1. You, the maintainer, will then run `brew pull --bottle` to update the formula back to `master` and publish the bottles
+
+
+## 🏗️ How to setup Azure Pipelines
 
 To add the ability to provide users with bottle for the taps you maintain, you need to do the following:
 
 1. create an Azure DevOps account using GitHub - [Azure DevOps](https://azure.microsoft.com/en-us/services/devops/)
+
 1. add Azure Pipelines for you repository - [Create your first pipeline](https://docs.microsoft.com/en-us/azure/devops/pipelines/create-first-pipeline)
+
 1. copy [`azure-pipelines.yml`](https://github.com/ladislas/homebrew-greetings/blob/master/azure-pipelines.yml) and [`.azure-ci`](https://github.com/ladislas/homebrew-greetings/tree/master/.azure-ci) directory to the root of your project
+
 1. `git commit && git push` the changes
+
 1. Create a new branch, `brew bump-revision` your formulae and create a PR
 
 Then keep reading to customize your `azure-pipelines.yml` file.
 
-## Customize `azure-pipelines.yml`
+## 🎨 Customize `azure-pipelines.yml`
 
 You need to change the `# Github variables` and the `# Bintray variables` in `azure-pipelines.yml`.
 
 ### Create variable groups & upload secure file on Azure Pipelines
 
-You need to create two Variable Groups (see [Create a variable group](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups)) to save logins, passwords and keys that will be used in the process:
+You need to create three Variable Groups (see [Create a variable group](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups)) to save logins, passwords and keys that will be used in the process:
 
 - `bintray` variable group:
 	- `bintray.user` - your Bintray username
 	- `bintray.key` - your Bintray API key
+
 - `ssh` variable group
 	- `ssh.hostname` - hostname for github
 	- `ssh.public_key` - the public key for github ssh connection
 	- `ssh.secure_file` - the name of the secure file containing your private ssh key for github, i.e. `github_ssh_private_key`
 	- `ssh.passphrase` - *optional* - the passphrase used to generate the ssh key
+
+- `github` variable group
+	- `github.token` - your personal access token
 
 To generate the needed SSH keys/files, follow the [Connecting to GitHub with SSH instructions](https://help.github.com/en/articles/connecting-to-github-with-ssh)
 
@@ -68,13 +89,13 @@ Your bottles will be uploaded on [Bintray](https://bintray.com), so you need to:
 - create a new package inside the repository with the name of the formula, such as `hello-world` or `goodbye-world`
 - in `azure-pipelines.yml`, update `bintray_org` and `bintray_repo` variables
 
-## FAQ
+## 🙋🙋‍♂️ FAQ
 
 ### Can I use this *framework* with a `test bot`?
 
 Yes, of course. You just need to set the `# GitHub variables` to those of your test bot account, including the ssh key.
 
-## Stages explained
+## 🔬 Stages explained
 
 `azure-pipelines.yml` contains different stages with different functions and different conditions. Some are dependent of others and will run sequentially, other won't.
 
